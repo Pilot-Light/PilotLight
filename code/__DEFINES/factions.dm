@@ -12,6 +12,7 @@
 #define FACTION_PLAYER_INTEQ "playerInteq"
 #define FACTION_PLAYER_ROUMAIN "playerRoumain"
 #define FACTION_PLAYER_GEZENA "playerGezena"
+#define FACTION_PLAYER_RAMZI "playerRamzi"
 
 #define FACTION_SYNDICATE "Syndicate"
 	#define FACTION_NGR "New Gorlex Republic"
@@ -27,6 +28,7 @@
 #define FACTION_FRONTIER "Frontiersmen Fleet"
 #define FACTION_PGF "Pan-Gezenan Federation"
 #define FACTION_INDEPENDENT "Independent"
+#define FACTION_RAMZI "Ramzi Clique"
 
 #define PREFIX_SYNDICATE list("SEV", "SSV")
 	#define PREFIX_NGR list("NGRV")
@@ -42,3 +44,4 @@
 #define PREFIX_FRONTIER list("FFV")
 #define PREFIX_PGF list("PGF", "PGFMC", "PGFN")
 #define PREFIX_INDEPENDENT list("SV", "IMV", "ISV")
+#define PREFIX_RAMZI list("SV", "ISV")
