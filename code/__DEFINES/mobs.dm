@@ -191,6 +191,15 @@
 
 #define BRAIN_DAMAGE_INTEGRITY_MULTIPLIER 0.5
 
+//Limb Trauma Defines
+#define TRAUMA_HEAL_RATE 0.2 // Base natural healing speed for trauma buildup, with 150 trauma (the maximum) it will take 12 minutes for it to fully heal
+#define TRAUMA_MAXIMUM 150
+#define TRAUMA_GAIN_PATCH 0.5 // Amount of trauma gained per point healed with a touch chemical
+#define TRAUMA_GAIN_TEND 0.8 // Amount of trauma gained per point healed with tend wounds surgery
+#define TRAUMA_GAIN_LEGION 20 //trade request: I recieve: 20 effective health. You recieve: 25 health.
+
+#define TRAUMA_LEGION_MALIGNANT 50 //using a legion core at or above this amount of average trauma will cause an infection, which is bad for you
+
 //Surgery Defines
 #define BIOWARE_GENERIC "generic"
 #define BIOWARE_NERVES "nerves"

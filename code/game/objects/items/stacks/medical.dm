@@ -14,6 +14,7 @@
 	item_flags = NOBLUDGEON
 	var/splint_fracture = FALSE //WS Edit- Splints
 	var/failure_chance //WS Edit - Failure chance
+	var/cause_trauma = 0
 	var/self_delay = 50
 	var/other_delay = 0
 	var/repeating = FALSE
@@ -74,12 +75,14 @@
 		user.visible_message("<span class='green'>[user] applies \the [src] on [C]'s [affecting.name].</span>", "<span class='green'>You apply \the [src] on [C]'s [affecting.name].</span>")
 		var/brute2heal = brute
 		var/burn2heal = burn
+		var/trauma_mod = (min(brute, affecting.brute_dam) + min(burn, affecting.burn_dam)) / cause_trauma
 		var/skill_mod = user?.mind?.get_skill_modifier(/datum/skill/healing, SKILL_SPEED_MODIFIER)
 		if(skill_mod)
 			brute2heal *= (2-skill_mod)
 			burn2heal *= (2-skill_mod)
 		if(affecting.heal_damage(brute2heal, burn2heal))
 			C.update_damage_overlays()
+			affecting.adjust_trauma(cause_trauma * trauma_mod)
 		return TRUE
 
 
@@ -107,12 +110,13 @@
 /obj/item/stack/medical/bruise_pack
 	name = "bruise pack"
 	singular_name = "bruise pack"
-	desc = "A therapeutic gel pack and bandages designed to treat blunt-force trauma."
+	desc = "A therapeutic gel pack and bandages designed to treat blunt-force trauma. Several of the active ingredients are unpronouncable."
 	icon_state = "brutepack"
 	lefthand_file = 'icons/mob/inhands/equipment/medical_lefthand.dmi'
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	apply_sounds = list('sound/effects/rip1.ogg', 'sound/effects/rip2.ogg')
 	var/heal_brute = 40
+	cause_trauma = 20
 	self_delay = 20
 	grind_results = list(/datum/reagent/medicine/styptic_powder = 10)
 
@@ -189,7 +193,7 @@
 
 /obj/item/stack/medical/ointment
 	name = "ointment"
-	desc = "Used to treat those nasty burn wounds."
+	desc = "Used to treat those nasty burn wounds. The font of the disclaimer is small enough so as to almost be illegible."
 	gender = PLURAL
 	singular_name = "ointment"
 	icon_state = "ointment"
@@ -197,6 +201,7 @@
 	righthand_file = 'icons/mob/inhands/equipment/medical_righthand.dmi'
 	apply_sounds = 'sound/effects/ointment.ogg'
 	var/heal_burn = 40
+	cause_trauma = 20
 	self_delay = 20
 	grind_results = list(/datum/reagent/medicine/silver_sulfadiazine = 10)
 
@@ -394,6 +399,7 @@
 	icon_state = "hbrutepack"
 	desc = "Thereputic herbs designed to treat bruises."
 	heal_brute = 15
+	cause_trauma = 0
 
 /obj/item/stack/medical/ointment/herb
 	name = "burn ointment slurry"
@@ -401,3 +407,4 @@
 	icon_state = "hointment"
 	desc = "Herb slurry meant to treat burns."
 	heal_burn = 15
+	cause_trauma = 0

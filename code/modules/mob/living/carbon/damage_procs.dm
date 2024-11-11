@@ -186,13 +186,15 @@
  *
  * It automatically updates health status
  */
-/mob/living/carbon/heal_bodypart_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, required_status)
+/mob/living/carbon/heal_bodypart_damage(brute = 0, burn = 0, stamina = 0, updating_health = TRUE, required_status, trauma_coeff = 0)
 	var/list/obj/item/bodypart/parts = get_damaged_bodyparts(brute,burn,stamina,required_status)
 	if(!parts.len)
 		return
 	var/obj/item/bodypart/picked = pick(parts)
 	var/damage_calculator = picked.get_damage(TRUE) //heal_damage returns update status T/F instead of amount healed so we dance gracefully around this
 	if(picked.heal_damage(brute, burn, stamina, required_status))
+		if(IS_ORGANIC_LIMB(picked))
+			picked.adjust_trauma(trauma_coeff * max(damage_calculator - picked.get_damage(TRUE), 0))
 		update_damage_overlays()
 	return max(damage_calculator - picked.get_damage(TRUE), 0)
 
@@ -332,3 +334,18 @@
 		part_in_question.adjust_bleeding(-amount_to_take)
 		amt -= amount_to_take
 		parts -= part_in_question
+
+// Traumatize this blorbo
+/mob/living/carbon/proc/adjustTrauma(amt)
+	var/list/obj/item/bodypart/parts = get_damageable_bodyparts(BODYTYPE_ORGANIC)
+	for(var/obj/item/bodypart/part in parts)
+		part.adjust_trauma(amt)
+
+/// Gets the average trauma value of a blorbo
+/mob/living/carbon/proc/getTrauma()
+	. = 0
+	var/parts = LAZYLEN(bodyparts)
+	for(var/obj/item/bodypart/BP as anything in bodyparts)
+		. += round(BP.trauma_buildup, DAMAGE_PRECISION)
+	if(parts)
+		. /= parts
